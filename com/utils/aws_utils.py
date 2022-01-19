@@ -8,6 +8,16 @@ def get_redshift_jdbc_url(redshift_config: dict):
     password = redshift_config["redshift_conf"]["password"]
     return "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
 
+def read_from_redshift(spark, jdbc_url, s3_temp_path, query):
+    df=spark.read \
+        .format("io.github.spark_redshift_community.spark.redshift") \
+        .option("url", jdbc_url) \
+        .option("query", query) \
+        .option("forward_spark_s3_credentials", "true") \
+        .option("tempdir", s3_temp_path) \
+        .load()
+    return df
+
 def write_to_redshift(regis_dim, app_secret, s3_temp_dir,table_name):
     dm=regis_dim.coalesce(1).write \
         .format("io.github.spark_redshift_community.spark.redshift") \

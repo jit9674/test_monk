@@ -77,6 +77,54 @@ if __name__ =='__main__':
                 ut.write_to_redshift(CHILD_DIM.coalesce(1), app_secret,
                                      "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp", tgt_conf['tableName'])
 
+        elif tgt=='RTL_TXN_FCT':
+            src_list = tgt_conf['source_data']
+            for src in src_list:
+                file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
+                src_df = spark.sql("select * from parquet.`{}`".format(file_path))\
+                        .createOrReplaceTempView(src)
+                #src_df.printSchema()
+                #src_df.show(5, False)
+
+                jdbc_url=ut.get_redshift_jdbc_url(app_secret)
+
+                ut.read_from_redshift(src_df,jdbc_url,
+                                      "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
+                                      "select * from {0}.{1} where ins_dt='2022-01-22'".format(app_conf['datamart_schema'],
+                                                                                               tgt_conf['target_src_table']))\
+                                        .createOrReplaceTempView(tgt_conf['target_src_table'])
+
+
+
+                RTL_TXN_FCT = spark.sql(app_conf["RTL_TXN_FCT"]["loadingQuery"])
+                RTL_TXN_FCT.show(5, False)
+
+                ut.write_to_redshift(RTL_TXN_FCT.coalesce(1), app_secret,
+                                     "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp", tgt_conf['tableName'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # spark-submit --jars "https://s3.amazonaws.com/redshift-downloads/drivers/jdbc/1.2.36.1060/RedshiftJDBC42-no-awssdk-1.2.36.1060.jar" --packages "org.apache.hadoop:hadoop-aws:2.7.4,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1,mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,io.github.spark-redshift-community:spark-redshift_2.11:4.0.1,org.apache.spark:spark-avro_2.11:2.4.2,org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
 
