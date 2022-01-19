@@ -57,6 +57,7 @@ REGIS_DIM:
               WHERE
               a.INS_DT = '2022-01-15') CP
 
+
 CHILD_DIM:
   tableName: "DATAMART.CHILD_DIM"
     source_data:
@@ -70,11 +71,10 @@ CHILD_DIM:
       FROM
           CP
       WHERE
-          INS_DT = '2022-01-16' AND CHILD_ID IS NOT NULL
+          INS_DT = '2022-01-15' AND CHILD_ID IS NOT NULL
       ) CP
 
 
 redshift_conf:
   filetype: csv
   delimiter: |
-  dbtable: DATAMART.REGIS_DIM
