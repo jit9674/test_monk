@@ -8,9 +8,6 @@ target_list:
   - REGIS_DIM
   - CHILD_DIM
 
-datamart_schema: DATAMART
-
-
 SB:
   mysql_conf:
     dbtable: testdb.TRANSACTIONSYNC
@@ -63,16 +60,15 @@ CHILD_DIM:
     source_data:
       - CP
     loadingQuery: >
-      SELECT
+          SELECT
           FN_UUID() AS CHILD_KEY, REGIS_CNSM_ID, REGIS_CTY_CODE, CHILD_ID, CHILD_NB,
           CHILD_GENDER, INS_DT
-      FROM
-           (SELECT DISTINCT REGIS_CNSM_ID, REGIS_CTY_CODE, CHILD_ID, CHILD_NB, CHILD_GENDER, INS_DT
-      FROM
+          FROM
+          (SELECT DISTINCT REGIS_CNSM_ID, REGIS_CTY_CODE, CHILD_ID, CHILD_NB, CHILD_GENDER, INS_DT
+          FROM
           CP
-      WHERE
-          INS_DT = '2022-01-15' AND CHILD_ID IS NOT NULL
-      ) CP
+          WHERE
+          INS_DT = '2022-01-15' AND CHILD_ID IS NOT NULL) CP
 
 
 redshift_conf:
