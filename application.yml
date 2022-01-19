@@ -6,7 +6,7 @@ source_list:
 
 target_list:
   - REGIS_DIM
-  - CHILD_DIM
+#  - CHILD_DIM
 
 SB:
   mysql_conf:
