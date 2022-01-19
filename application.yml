@@ -57,9 +57,9 @@ REGIS_DIM:
 
 CHILD_DIM:
   tableName: "DATAMART.CHILD_DIM"
-    source_data:
-      - CP
-    loadingQuery: >
+  source_data:
+     - CP
+  loadingQuery: >
           SELECT
           FN_UUID() AS CHILD_KEY, REGIS_CNSM_ID, REGIS_CTY_CODE, CHILD_ID, CHILD_NB,
           CHILD_GENDER, INS_DT
