@@ -81,6 +81,7 @@ if __name__ =='__main__':
             print("Redshift data reading")
             src_list = tgt_conf['source_data']
             for src in src_list:
+                print(src)
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
                 src_df=spark.sql("select * from parquet.`{}`".format(file_path))
                 src_df.printSchema()
