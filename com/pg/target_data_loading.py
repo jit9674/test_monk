@@ -100,7 +100,7 @@ if __name__ =='__main__':
 
 
 
-                RTL_TXN_FCT = spark.sql(app_conf["RTL_TXN_FCT"]["loadingQuery"])
+                RTL_TXN_FCT = spark.sql(tgt_conf['loadingQuery'])
                 RTL_TXN_FCT.show(5, False)
 
                 ut.write_to_redshift(RTL_TXN_FCT.coalesce(1), app_secret,

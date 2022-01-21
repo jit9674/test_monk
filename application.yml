@@ -76,8 +76,9 @@ CHILD_DIM:
 RTL_TXN_FCT:
   tableName: "DATAMART.RTL_TXN_FCT"
   source_data:
-     - SB
-     - OL
+    - SB
+    - OL
+
   target_src_table: REGIS_DIM
   loadingQuery: >
           SELECT
