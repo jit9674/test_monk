@@ -82,7 +82,7 @@ if __name__ =='__main__':
             src_list = tgt_conf['source_data']
             for src in src_list:
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
-                spark.sql("select * from parquet.`{}`".format(file_path))\
+                src_df=spark.sql("select * from parquet.`{}`".format(file_path))\
                         .createOrReplaceTempView(src)
                 #src_df.printSchema()
                 #src_df.show(5, False)
@@ -92,7 +92,7 @@ if __name__ =='__main__':
                 ut.read_from_redshift(spark,jdbc_url,
                                       "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
                                       "select * from {0}.{1} where ins_dt>'2022-01-18'".format(app_conf['datamart_schema'],
-                                                                                               tgt_conf['target_src_table']))\
+                                                                                               tgt_conf["target_src_table"]))\
                                         .createOrReplaceTempView(tgt_conf['target_src_table'])
 
 
