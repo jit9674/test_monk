@@ -80,6 +80,7 @@ if __name__ =='__main__':
         elif tgt=='RTL_TXN_FCT':
             print("Redshift data reading")
             src_list = tgt_conf['source_data']
+            print(src_list)
             for src in src_list:
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
                 src_df=spark.sql("select * from parquet.`{}`".format(file_path))
@@ -94,7 +95,7 @@ if __name__ =='__main__':
                                       "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
                                       "select * from {0}.{1} where ins_dt='2022-01-15'".format(app_conf['datamart_schema'],tgt_conf["target_src_table"]))
 
-                mk_df.show(5)
+                
                 mk_df.createOrReplaceTempView(tgt_conf['target_src_table'])
 
 
