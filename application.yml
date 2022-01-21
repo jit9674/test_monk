@@ -74,11 +74,11 @@ CHILD_DIM:
           INS_DT = '2022-01-15' AND CHILD_ID IS NOT NULL) CP
 
 RTL_TXN_FCT:
+  tableName: "DATAMART.RTL_TXN_FCT"
   source_data:
      - SB
      - OL
   target_src_table: REGIS_DIM
-  tableName: "DATAMART.RTL_TXN_FCT"
   loadingQuery: >
           SELECT
           FN_UUID() AS RTL_TXN_KEY, CAST(TXN.APP_TRANSACTION_ID AS STRING)AS TXN_ID, SIZE(split(REC.PRODUCTS, ',')) AS TXN_ITEM_QTY,
