@@ -91,8 +91,9 @@ if __name__ =='__main__':
 
                 mk_df=ut.read_from_redshift(spark,jdbc_url,
                                       "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
-                                      "select * from {0}.{1} where ins_dt='2022-01-15'".format(app_conf['datamart_schema'],
-                mk_df.show(5)                                                                               tgt_conf['target_src_table']))
+                                      "select * from {0}.{1} where ins_dt='2022-01-15'".format(app_conf['datamart_schema'],tgt_conf["target_src_table"]))
+
+                mk_df.show(5)
                 mk_df.createOrReplaceTempView(tgt_conf['target_src_table'])
 
 
