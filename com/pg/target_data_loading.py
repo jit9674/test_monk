@@ -89,24 +89,24 @@ if __name__ =='__main__':
                 print(src)
                 src_df.createOrReplaceTempView(src)
 
-                jdbc_url=ut.get_redshift_jdbc_url(app_secret)
+            jdbc_url=ut.get_redshift_jdbc_url(app_secret)
 
-                mk_df=ut.read_from_redshift(spark,jdbc_url,
-                                      "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
-                                      "select * from {0}.{1} where ins_dt='2022-01-15'".format(app_conf['datamart_schema'],tgt_conf["target_src_table"]))
-
-
-                mk_df.createOrReplaceTempView(tgt_conf['target_src_table'])
+            mk_df=ut.read_from_redshift(spark,jdbc_url,
+                                    "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
+                                    "select * from {0}.{1} where ins_dt='2022-01-15'".format(app_conf['datamart_schema'],tgt_conf["target_src_table"]))
 
 
+            mk_df.createOrReplaceTempView(tgt_conf['target_src_table'])
 
-                RTL_TXN_FCT = spark.sql(app_conf["RTL_TXN_FCT"]["loadingQuery"])
-                RTL_TXN_FCT.show(5, False)
 
-                ut.write_to_redshift(RTL_TXN_FCT.coalesce(1), app_secret,
+
+            RTL_TXN_FCT = spark.sql(app_conf["RTL_TXN_FCT"]["loadingQuery"])
+            RTL_TXN_FCT.show(5, False)
+
+            ut.write_to_redshift(RTL_TXN_FCT.coalesce(1), app_secret,
                                      "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp", tgt_conf['tableName'])
 
-                print("Redshift data writing completed")
+            print("Redshift data writing completed")
 
 
 
