@@ -1,12 +1,12 @@
 source_list:
   - SB
   - OL
- # - CP
-  #- ADDR
+  - CP
+  - ADDR
 
 target_list:
- # - REGIS_DIM
- # - CHILD_DIM
+  - REGIS_DIM
+  - CHILD_DIM
   - RTL_TXN_FCT
 
 datamart_schema: DATAMART
